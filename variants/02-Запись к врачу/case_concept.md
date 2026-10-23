@@ -109,36 +109,43 @@
 
 ```mermaid
 flowchart TB
-  COS[Cafeteria Ordering System]
+    SYS[Система записи к врачу через МАХ]
 
-  COS --> Access[Доступ]
-  Access --> Intranet[Интрасеть]
-  Access --> Internet[Интернет]
-  Access --> Mobile[Мобильные устройства]
-  Mobile --> Phone[Смартфон]
-  Mobile --> Tablet[Планшет]
+    SYS --> Auth[Авторизация]
+    Auth --> FE1[Авторизация через ЕСИА]
+    Auth --> FE10[Выбор профиля пациента]
 
-  COS --> Orders[Заказы на питание]
-  Orders --> Place[Размещение заказа]
-  Orders --> Change[Изменение заказа]
-  Orders --> Cancel[Отмена заказа]
-  Orders --> History[Просмотр истории заказов]
+    SYS --> Appointment[Запись на прием]
+    Appointment --> FE2[Просмотр специальностей]
+    Appointment --> FE3[Просмотр врачей]
+    Appointment --> FE4[Просмотр организаций и расписания]
+    Appointment --> FE5[Выбор врача и времени]
+    Appointment --> FE6[Создание записи]
+    Appointment --> FE14[Проверка возможности записи]
 
-  COS --> Menu[Меню кафетерия]
-  Menu --> ViewMenu[Просмотр меню]
-  Menu --> CreateMenu[Создание меню]
-  Menu --> ChangeMenu[Изменение меню]
-  Menu --> DeleteMenu[Удаление меню]
-  Menu --> ArchiveMenu[Архивирование меню]
-  Menu --> Ingredients[Просмотр списка ингредиентов]
+    SYS --> MyAppointments[Мои записи]
+    MyAppointments --> FE7[Просмотр активных записей]
+    MyAppointments --> FE8[Просмотр подробностей записи]
+    MyAppointments --> FE9[Отмена записи]
 
-  COS --> Subs[Подписки на стандартные блюда]
-  Subs --> CreateSub[Создание подписки]
-  Subs --> ChangeSub[Изменение подписки]
-  Subs --> CancelSub[Отмена подписки]
+    SYS --> Telemedicine[Телемедицина]
+    Telemedicine --> FE12[Организация консультации через МАХ]
 
-  COS --> Cafe[Действия кафетерия и доставки]
-  Cafe --> Restaurants[Рестораны]
+    SYS --> Notifications[Уведомления]
+    Notifications --> FE11[Напоминания о приеме]
+
+    SYS --> MIS[Интеграция с МИС]
+    MIS --> FE13[Получение расписания и обработка записей]
+    MIS --> Schedule[Получение данных о врачах и организациях]
+    MIS --> Booking[Создание и отмена записей]
+
+    SYS --> Statistics[Статистика]
+    Statistics --> FE15[Передача статистических событий]
+    Statistics --> FE16[События по листкам нетрудоспособности]
+
+    SYS --> Support[Обработка ошибок и доступ]
+    Support --> FE17[Обработка ошибок]
+    Support --> FE18[Доступ через интерфейс МАХ]
 ```
 
 ### 4.3. Варианты использования по ролям
