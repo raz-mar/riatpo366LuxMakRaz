@@ -1,0 +1,28 @@
+@startuml usecase
+title Диаграмма прецедентов. Справка об обучении
+left to right direction
+
+actor "Студент" as Student
+actor "Секретарь\nдеканата" as Secretary
+
+rectangle "Личный кабинет. Справки" {
+  usecase "Получить типовую\nсправку об обучении" as UC1
+  usecase "Увидеть причину отказа" as UC2
+  usecase "Передать справку\nвне перечня секретарю" as UC3
+  usecase "Записать выдачу в журнал" as UC4
+}
+
+Student --> UC1
+Student --> UC2
+Student --> UC3
+Secretary --> UC3
+UC1 ..> UC4 : include
+UC3 ..> UC4 : include
+
+note bottom of UC3
+  Военкомат и нестандартная
+  формулировка. Типовая справка
+  эту ветвь не проходит.
+end note
+
+@enduml
