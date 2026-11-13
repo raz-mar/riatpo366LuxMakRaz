@@ -1,0 +1,22 @@
+@startuml sequence-status
+title КНТ-1. ИС «Кабинет» читает статус в ИС «Контингент». REST
+
+actor "Студент" as Student
+participant "ИС «Кабинет»" as LK
+participant "ИС «Контингент»" as Accounting
+
+Student -> LK : вид справки и адресат
+LK -> Accounting : GET /contingent/students/{studentId}\nAuthorization: токен кабинета
+
+alt 200, enrolled = true
+  Accounting --> LK : studentId совпал,\nenrolled = true
+  LK --> Student : студент числится.\nДальше перечень и подпись
+else 200, enrolled = false
+  Accounting --> LK : studentId совпал,\nenrolled = false
+  LK --> Student : причина «не числится».\nPDF и подпись не вызываются
+else годного ответа нет
+  Accounting --> LK : не 200, обрыв, таймаут\nили чужой studentId
+  LK --> Student : проверку выполнить не удалось.\n«Не числится» не показывают
+end
+
+@enduml

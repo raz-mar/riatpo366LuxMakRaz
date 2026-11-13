@@ -1,0 +1,19 @@
+@startuml sequence
+title КНТ-n. <операция>. <SOAP | REST | gRPC>
+
+actor "<роль>" as Role
+participant "<система>" as System
+participant "<смежная система>" as External
+
+Role -> System : действие, с которого начинается вызов
+System -> External : операция и что уходит
+
+alt успех
+  External --> System : ответ
+  System --> Role : что видит роль
+else ошибка или отказ
+  External --> System : ошибка
+  System --> Role : что роль видит вместо успеха
+end
+
+@enduml

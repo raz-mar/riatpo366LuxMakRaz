@@ -1,0 +1,28 @@
+@startuml sequence-journal
+title КНТ-3. ИС «Кабинет» пишет выдачу в ИС «Журнал». gRPC
+
+participant "ИС «Кабинет»" as LK
+participant "ИС «Журнал»" as Journal
+
+LK -> Journal : gRPC IssuanceLog.Append\nrequest_id, student_id, kind, file_ref
+
+alt новая запись
+  Journal --> LK : record_id, issued_at
+  note right of LK
+    Статус заявки
+    может стать «выдана».
+  end note
+else повтор с теми же полями
+  Journal --> LK : прежний record_id, issued_at
+  note right of Journal
+    Второй записи нет.
+  end note
+else ошибка или другой file_ref
+  Journal --> LK : код ошибки, record_id нет
+  note right of LK
+    Статус «выдана»
+    не ставят.
+  end note
+end
+
+@enduml
