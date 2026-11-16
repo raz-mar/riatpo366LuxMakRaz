@@ -1,0 +1,11 @@
+@startuml landscape
+title Контур систем. <название кейса>
+
+actor "<роль>" as Role
+component "<система>" as System
+database "<хранилище или смежная система>" as External
+
+Role --> System
+System --> External : что передаётся
+
+@enduml

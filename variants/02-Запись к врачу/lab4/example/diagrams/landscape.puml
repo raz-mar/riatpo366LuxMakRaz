@@ -1,0 +1,39 @@
+@startuml landscape
+title Контур систем. Справка об обучении
+
+actor "Студент" as Student
+actor "Секретарь" as Secretary
+
+node "ИС «Кабинет»" {
+  component "Модуль «Справки»" as LK
+  database "Архив справок" as Store
+}
+
+node "ИС «Контингент»" {
+  database "Учёт\nобучающихся" as Accounting
+}
+
+node "ИС «Оргподпись»" {
+  component "Электронная подпись\nорганизации" as Sign
+}
+
+node "ИС «Журнал»" {
+  component "Журнал\nвыдачи" as Journal
+}
+
+Student --> LK : HTTPS
+Secretary --> LK : HTTPS
+LK --> Accounting : статус\nREST
+LK --> Sign : PDF на подпись\nSOAP
+LK --> Journal : запись выдачи\ngRPC
+LK --> Store : файл PDF
+
+note bottom of LK
+  Сессия не хранится в памяти
+  одного процесса: ИС «Кабинет»
+  уже стоит за балансировщиком.
+  Имена ИС и три протокола —
+  допущение примера.
+end note
+
+@enduml

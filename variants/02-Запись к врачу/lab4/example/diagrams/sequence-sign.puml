@@ -1,0 +1,26 @@
+@startuml sequence-sign
+title КНТ-2. ИС «Кабинет» подписывает PDF в ИС «Оргподпись». SOAP
+
+actor "Студент" as Student
+participant "ИС «Кабинет»" as LK
+participant "ИС «Оргподпись»" as Sign
+
+LK -> Sign : SOAP SignDocument\nrequestId, fileName, PDF
+
+alt подписанный PDF
+  Sign --> LK : тот же requestId,\nsignedContent
+  LK --> Student : файл можно открыть.\nЖурнал этим ответом ещё не записан
+else документ отклонён
+  Sign --> LK : soap:Fault, faultcode Client
+  LK --> Student : справка не готова,\nстатуса «выдана» нет
+else ИС «Оргподпись» недоступна
+  Sign --> LK : soap:Fault Server,\nнет ответа или таймаут
+  LK --> Student : справка не готова,\nстатуса «выдана» нет
+  note right of LK
+    Первая такая ошибка
+    запускает НФТ-8:
+    сигнал дежурному.
+  end note
+end
+
+@enduml
